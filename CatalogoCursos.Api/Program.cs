@@ -60,6 +60,17 @@ builder.Services.AddScoped<
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("BlazorLocal", policy =>
+    {
+        policy.WithOrigins("http://localhost:5100")
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials();
+    });
+});
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -86,6 +97,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("BlazorLocal");
+
 app.UseAuthentication();
 app.UseAuthorization();
 
